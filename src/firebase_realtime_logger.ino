@@ -109,15 +109,21 @@ void loop(){
     }
   count++;
 
-  //Write sebuah angka desimal pada database dengan path test/float
-  if (Firebase.RTDB.setFloat(&fbdo, "test/float", 0.01 + random(0,100))){
-    Serial.println("PATH : " + fbdo.dataPath());
-    Serial.println("Data Type : " + fbdo.dataType());
-    Serial.println("Float berhasil diperbarui..");
-  }
-  else{
-    Serial.println("FAILED..");
-    Serial.println("What makes : " + fbdo.errorReason());
+  
+    //Write data float ke firebase dengan path /test/floatHistory
+    // Kode baru
+    String pathFloat = "/test/floatHistory/" + String(timestamp);
+    Serial.print("Mengirim ke : ");
+    Serial.print(pathFloat);
+
+    if (Firebase.RTDB.setFloat(&fbdo, pathFloat, 0.01 + random(0, 100))){
+      Serial.println("PATH : " + fbdo.dataPath() + ", Data type : " + fbdo.dataType());
+      Serial.println("Float berhasil disimpan dengan timestamp...");
     }
+    else{
+      Serial.println("FAILED..");
+      Serial.println("What makes : " + fbdo.errorReason());
+    }
+
   }
 }
